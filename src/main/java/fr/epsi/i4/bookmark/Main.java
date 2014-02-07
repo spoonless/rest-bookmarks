@@ -2,6 +2,8 @@ package fr.epsi.i4.bookmark;
 
 import java.net.URI;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.glassfish.jersey.server.ApplicationHandler;
 import org.glassfish.jersey.simple.SimpleContainerFactory;
@@ -12,7 +14,8 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		String port = Objects.toString(System.getenv("PORT"), "8080");
-	    SimpleContainerFactory.create(new URI("http://localhost:" + port), new ApplicationHandler(new BookmarkApplication()));
+		Logger.getLogger("bookmarks").log(Level.INFO, "Starting web services on port " + port);
+	    SimpleContainerFactory.create(new URI("http://rest-bookmarks.herokuapp.com:" + port), new ApplicationHandler(new BookmarkApplication()));
 	}
 
 }
