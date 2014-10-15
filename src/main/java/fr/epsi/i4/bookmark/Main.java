@@ -2,18 +2,20 @@ package fr.epsi.i4.bookmark;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.simple.SimpleContainerFactory;
 import org.glassfish.jersey.simple.SimpleContainerProvider;
 import org.simpleframework.http.Request;
 import org.simpleframework.http.Response;
 import org.simpleframework.http.core.Container;
+import org.simpleframework.http.core.ContainerServer;
+import org.simpleframework.transport.Server;
+import org.simpleframework.transport.connect.Connection;
+import org.simpleframework.transport.connect.SocketConnection;
 
 import fr.epsi.i4.bookmark.web.BookmarkApplication;
 
@@ -26,10 +28,18 @@ public class Main implements Container {
 		container = provider.createContainer(Container.class, new BookmarkApplication());
 	}
 
-	public static void main(String[] args) throws URISyntaxException {
-		String port = Objects.toString(System.getenv("PORT"), "8080");
+	public static void main(String[] args) throws IOException, InterruptedException {
+		int port = Integer.parseInt(Objects.toString(System.getenv("PORT"), "8080"));
         Logger.getLogger("bookmarks").log(Level.INFO, "Starting web services on port " + port);
-		SimpleContainerFactory.create(new URI("http://rest-bookmarks.herokuapp.com:" + 8080), ResourceConfig.forApplication(new BookmarkApplication()));
+        Server server = new ContainerServer(new Main());
+
+		try(Connection connection = new SocketConnection(server)) {
+			SocketAddress address = new InetSocketAddress(port);
+			connection.connect(address);
+			synchronized (connection) {
+				connection.wait();
+			}
+		}
 	}
 
 	@Override
