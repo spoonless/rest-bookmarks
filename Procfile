@@ -1,1 +1,1 @@
-web: java -cp target/classes:target/dependency/* fr.epsi.i4.bookmark.Main
+web: java -cp target/classes:target/dependency/* fr.epsi.i4.bookmark.JettyMain
