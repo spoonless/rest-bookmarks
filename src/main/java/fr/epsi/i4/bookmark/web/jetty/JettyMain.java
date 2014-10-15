@@ -1,4 +1,4 @@
-package fr.epsi.i4.bookmark;
+package fr.epsi.i4.bookmark.web.jetty;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;

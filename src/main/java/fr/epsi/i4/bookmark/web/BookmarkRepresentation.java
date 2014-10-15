@@ -11,15 +11,15 @@ import fr.epsi.i4.bookmark.Bookmark;
 
 @XmlRootElement(name = "bookmark")
 @XmlType(propOrder = { "name", "url", "description", "qrCodeLink" })
-public class BookmarkResponse {
+public class BookmarkRepresentation {
 
 	private Bookmark bookmark;
 	private Link qrCodeLink;
 
-	public BookmarkResponse() {
+	public BookmarkRepresentation() {
 	}
 
-	public BookmarkResponse(Bookmark bookmark, UriBuilder uriBuilder) {
+	public BookmarkRepresentation(Bookmark bookmark, UriBuilder uriBuilder) {
 		this.bookmark = bookmark;
 		URI qrcodeUri = uriBuilder.path("qrcode").build();
 		this.qrCodeLink = new Link(qrcodeUri, "qrcode");

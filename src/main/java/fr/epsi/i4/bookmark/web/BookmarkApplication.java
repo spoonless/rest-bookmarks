@@ -11,6 +11,7 @@ public class BookmarkApplication extends Application {
 	public Set<Class<?>> getClasses() {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
 		classes.add(QrCodeBodyWriter.class);
+		classes.add(BookmarkExceptionMapper.class);
 		return classes;
 	}
 	

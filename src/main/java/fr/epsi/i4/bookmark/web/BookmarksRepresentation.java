@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "bookmarks")
-public class BookmarksResponse {
+public class BookmarksRepresentation {
 
 	private final List<Link> links = new ArrayList<>();
 	private final List<Link> navigationLinks = new ArrayList<>();
@@ -59,11 +59,11 @@ public class BookmarksResponse {
 		UriBuilder navUriBuilder = uriBuilder.clone().replaceQueryParam("startIndex", "{startIndex}");
 		if (this.startIndex > 0) {
 			int previousIndex = Math.max(0, this.startIndex - this.itemCount);
-			this.navigationLinks.add(new Link(navUriBuilder.build(previousIndex),"previousPage"));
+			this.navigationLinks.add(new Link(navUriBuilder.build(previousIndex),"prev"));
 		}
 		if (!this.links.isEmpty() && this.links.size() == this.itemCount) {
-			this.navigationLinks.add(new Link(navUriBuilder.build(this.startIndex + this.itemCount),"nextPage"));
+			this.navigationLinks.add(new Link(navUriBuilder.build(this.startIndex + this.itemCount),"next"));
 		}
-		this.navigationLinks.add(new Link(uriBuilder.path("latest").replaceQuery("").build(), "latest"));
+		this.navigationLinks.add(new Link(uriBuilder.path("latest").replaceQuery("").build(), "current"));
 	}
 }

@@ -1,15 +1,14 @@
 package fr.epsi.i4.bookmark;
 
+import java.util.Date;
 import java.util.Objects;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "bookmark")
 public class Bookmark {
 
 	private String name;
 	private String description;
 	private String url;
+	private Date lastModification;
 
 	public Bookmark() {
 	}
@@ -51,5 +50,13 @@ public class Bookmark {
 		if (Objects.toString(url, "").isEmpty()) {
 			throw new InvalidBookmarkException("Bookmark url cannot be empty!");
 		}
+	}
+
+	public Date getLastModification() {
+		return lastModification;
+	}
+
+	public void setLastModification(Date lastModification) {
+		this.lastModification = lastModification;
 	}
 }

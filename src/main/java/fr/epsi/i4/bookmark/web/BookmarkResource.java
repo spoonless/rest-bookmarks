@@ -10,7 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
@@ -30,35 +32,42 @@ public class BookmarkResource {
 
 	@PUT
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public void merge(Bookmark bookmark) {
+	public Response merge(@Context Request request, Bookmark bookmark) throws InvalidBookmarkException {
 		if (bookmark == null) {
 			throw new WebApplicationException(Status.BAD_REQUEST);
 		}
-
-		try {
-			bookmarkRepository.add(id, bookmark);
-		} catch (InvalidBookmarkException e) {
-			Response response = Response.status(Status.BAD_REQUEST).type(MediaType.TEXT_PLAIN).entity(e.getMessage()).build();
-			throw new WebApplicationException(response);
-		}
+		
+		checkPreconditions(request, bookmarkRepository.get(id));
+		
+		bookmarkRepository.add(id, bookmark);
+		return Response.noContent().build();
 	}
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public BookmarkResponse get(@Context UriInfo uriInfo) {
-		return new BookmarkResponse(getBookmark(), uriInfo.getRequestUriBuilder());
+	public Response get(@Context Request request, @Context UriInfo uriInfo) {
+		Bookmark bookmark = getBookmark();
+		checkPreconditions(request, bookmark);
+
+		BookmarkRepresentation bookmarkRepresentation = new BookmarkRepresentation(bookmark, uriInfo.getRequestUriBuilder());
+		return Response.ok(bookmarkRepresentation)
+				        .lastModified(bookmark.getLastModification())
+				        .link(bookmarkRepresentation.getQrCodeLink().getHref(), "http://bookmarks.epsi.fr/qrcode")
+				        .build();
 	}
 
 	@DELETE
-	public void delete() {
+	public Response delete() {
 		bookmarkRepository.delete(id);
+		return Response.noContent().build();
 	}
 
 	@GET
 	@Path("qrcode")
 	@Produces("image/png")
-	public String getQrCode() {
-		return getBookmark().getUrl();
+	public Response getQrCode() {
+		Bookmark bookmark = getBookmark();
+		return Response.ok(bookmark.getUrl()).lastModified(bookmark.getLastModification()).build();
 	}
 
 	@OPTIONS
@@ -74,4 +83,14 @@ public class BookmarkResource {
 		}
 		return bookmark;
 	}
+
+	private void checkPreconditions(Request request, Bookmark bookmark) {
+		if (bookmark != null) {
+			ResponseBuilder builder = request.evaluatePreconditions(bookmark.getLastModification());
+			if (builder != null) {
+				throw new WebApplicationException(builder.build());
+			}
+		}
+	}
+
 }
