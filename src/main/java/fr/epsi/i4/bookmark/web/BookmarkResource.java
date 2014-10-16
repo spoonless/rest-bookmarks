@@ -34,7 +34,7 @@ public class BookmarkResource {
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Response merge(@Context Request request, Bookmark bookmark) throws InvalidBookmarkException {
 		if (bookmark == null) {
-			throw new WebApplicationException(Status.BAD_REQUEST);
+			throw new InvalidBookmarkException("No bookmark sent in request body!");
 		}
 		
 		checkPreconditions(request, bookmarkRepository.get(id));

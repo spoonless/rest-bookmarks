@@ -37,7 +37,7 @@ public class BookmarksResource {
 	@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 	public Response add(Bookmark bookmark) throws InvalidBookmarkException {
 		if (bookmark == null) {
-			throw new WebApplicationException(Status.BAD_REQUEST);
+			throw new InvalidBookmarkException("No bookmark sent in request body!");
 		}
 		String id = UUID.randomUUID().toString();
 		bookmarkRepository.add(id, bookmark);
@@ -83,8 +83,7 @@ public class BookmarksResource {
 		UriBuilder uriBuilder = getUriBuilderFromId("{id}");
 
 		for (String id : bookmarkRepository.getIds(startIndex, itemCount)) {
-			URI uri = uriBuilder.build(id);
-			bookmarksRepresentation.addBookmarkLink(uri);
+			bookmarksRepresentation.addBookmarkLink(uriBuilder.build(id));
 		}
 
 		bookmarksRepresentation.addNavigationLinks(uriInfo.getRequestUriBuilder());
