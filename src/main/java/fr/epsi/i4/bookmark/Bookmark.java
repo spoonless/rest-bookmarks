@@ -59,4 +59,9 @@ public class Bookmark {
 	public void setLastModification(Date lastModification) {
 		this.lastModification = lastModification;
 	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.description, this.name, this.url);
+	}
 }
