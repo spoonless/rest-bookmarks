@@ -58,14 +58,16 @@ public class BookmarkRepository {
 		bookmarks.add(new Bookmark("HTTP RFC7234", "Hypertext Transfer Protocol (HTTP/1.1): Caching", "http://tools.ietf.org/html/rfc7234"));
 		bookmarks.add(new Bookmark("HTTP RFC7235", "Hypertext Transfer Protocol (HTTP/1.1): Authentication", "http://tools.ietf.org/html/rfc7235"));
 
-		bookmarks.add(new Bookmark("restcookbook", "quelques articles intéressants sur REST", "http://restcookbook.com/"));
+		bookmarks.add(new Bookmark("REST cookbook", "quelques articles intéressants sur REST", "http://restcookbook.com/"));
 		bookmarks.add(new Bookmark("Richardson Maturity Model", "évaluer le niveau RESTful d'une API", "http://martinfowler.com/articles/richardsonMaturityModel.html"));
 		bookmarks.add(new Bookmark("freegeoip", "Un exemple de web service RESTful", "http://freegeoip.net/"));
 		bookmarks.add(new Bookmark("OpenBeer", "Un exemple de web service RESTful", "http://openbeerdatabase.com/"));
 		bookmarks.add(new Bookmark("API WoW", "Un exemple de web service RESTful", "http://blizzard.github.io/api-wow-docs/"));
 		bookmarks.add(new Bookmark("Annuaire Web services RESTful", "Pour trouvez des web services publics", "http://www.programmableweb.com/apis/directory"));
-		bookmarks.add(new Bookmark("Document Jersey", "La documentation du framework Jersey", "https://jersey.java.net/documentation/latest/"));
+		bookmarks.add(new Bookmark("Architectural Styles and the Design of Network-based Software Architectures", "La thèse de doctorat de Roy Fielding", "http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm"));
+		bookmarks.add(new Bookmark("Document Jersey", "La documentation du framework Jersey pour implémenter des services Web", "https://jersey.java.net/documentation/latest/"));
 		bookmarks.add(new Bookmark("How to get a cup of coffee", "Starbuck en RESTful", "http://www.infoq.com/articles/webber-rest-workflow"));
+		bookmarks.add(new Bookmark("RESTful Web APIs", "Un lien vers le livre de Jim Webber, Savas Parastatidis et Ian Robinson, publié chez O'Reilly Media en 2010", "http://it-ebooks.info/book/3060/"));
 
 		try {
 			for (Bookmark bookmark : bookmarks) {

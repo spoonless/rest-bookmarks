@@ -1,5 +1,8 @@
 package fr.epsi.i4.bookmark.web;
 
+import static javax.ws.rs.core.Response.noContent;
+import static javax.ws.rs.core.Response.ok;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,7 +19,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
-import static javax.ws.rs.core.Response.*;
 
 import fr.epsi.i4.bookmark.Bookmark;
 import fr.epsi.i4.bookmark.BookmarkRepository;
@@ -69,9 +71,11 @@ public class BookmarkResource {
 	@GET
 	@Path("qrcode")
 	@Produces("image/png")
-	public Response getQrCode() {
+	public Response getQrCode(@Context Request request, @Context UriInfo uriInfo) {
 		Bookmark bookmark = getBookmark();
+		checkPreconditions(request, bookmarkRepository.get(id));
 		return ok(bookmark.getUrl())
+				.link(uriInfo.getAbsolutePath().resolve("."), "alternate")
 				.lastModified(bookmark.getLastModification())
 				.tag(String.valueOf(bookmark.hashCode()))
 				.build();
@@ -80,7 +84,7 @@ public class BookmarkResource {
 	@OPTIONS
 	@Path("qrcode")
 	public Response getQrCodeHead() {
-		return ok().header("Allow", "GET,OPTIONS,HEAD").build();
+		return noContent().allow("GET", "OPTIONS", "HEAD").build();
 	}
 	
 	public Bookmark getBookmark() {

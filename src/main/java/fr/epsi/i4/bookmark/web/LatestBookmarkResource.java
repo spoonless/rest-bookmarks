@@ -4,6 +4,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -40,8 +41,15 @@ public class LatestBookmarkResource {
 		BookmarkRepresentation bookmarkRepresentation = new BookmarkRepresentation(bookmark, uriBuilder.clone());
 		return ok()
 				.header("Content-Location", uriBuilder.build())
+				.cacheControl(createCacheControl())
 				.tag(String.valueOf(bookmark.hashCode()))
 				.entity(bookmarkRepresentation)
 				.lastModified(bookmark.getLastModification()).build();
+	}
+
+	private CacheControl createCacheControl() {
+		CacheControl cacheControl = new CacheControl();
+		cacheControl.setNoCache(true);
+		return cacheControl;
 	}
 }

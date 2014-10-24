@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -89,10 +90,17 @@ public class BookmarksResource {
 		bookmarksRepresentation.addNavigationLinks(uriInfo.getRequestUriBuilder());
 
 		ResponseBuilder responseBuilder = Response.ok(bookmarksRepresentation);
+		responseBuilder.cacheControl(createCacheControl());
 		for (Link link : bookmarksRepresentation.getNavigationLinks()) {
 			responseBuilder.link(link.getHref(), link.getRel());
 		}
 		return responseBuilder.build();
+	}
+
+	private CacheControl createCacheControl() {
+		CacheControl cacheControl = new CacheControl();
+		cacheControl.setNoCache(true);
+		return cacheControl;
 	}
 
 	private void throwBadRequest(String message) {
