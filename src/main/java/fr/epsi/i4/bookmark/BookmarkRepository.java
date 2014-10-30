@@ -67,7 +67,7 @@ public class BookmarkRepository {
 		bookmarks.add(new Bookmark("Architectural Styles and the Design of Network-based Software Architectures", "La thèse de doctorat de Roy Fielding", "http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm"));
 		bookmarks.add(new Bookmark("Document Jersey", "La documentation du framework Jersey pour implémenter des services Web", "https://jersey.java.net/documentation/latest/"));
 		bookmarks.add(new Bookmark("How to get a cup of coffee", "Starbuck en RESTful", "http://www.infoq.com/articles/webber-rest-workflow"));
-		bookmarks.add(new Bookmark("RESTful Web APIs", "Un lien vers le livre de Jim Webber, Savas Parastatidis et Ian Robinson, publié chez O'Reilly Media en 2010", "http://it-ebooks.info/book/3060/"));
+		bookmarks.add(new Bookmark("RESTful Web APIs", "Un lien vers le livre de Jim Webber, Savas Parastatidis et Ian Robinson, publié chez O'Reilly Media en 2010", "http://shop.oreilly.com/product/0636920028468.do"));
 
 		try {
 			for (Bookmark bookmark : bookmarks) {

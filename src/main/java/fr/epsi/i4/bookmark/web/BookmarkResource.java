@@ -102,11 +102,16 @@ public class BookmarkResource {
 	}
 
 	public static void checkPreconditions(Request request, Bookmark bookmark) {
+		ResponseBuilder builder = null;
 		if (bookmark != null) {
-			ResponseBuilder builder = request.evaluatePreconditions(bookmark.getLastModification(), new EntityTag(String.valueOf(bookmark.hashCode())));
-			if (builder != null) {
-				throw new WebApplicationException(builder.build());
-			}
+			builder = request.evaluatePreconditions(bookmark.getLastModification(), new EntityTag(String.valueOf(bookmark.hashCode())));
+		}
+		else {
+			builder = request.evaluatePreconditions();
+		}
+
+		if (builder != null) {
+			throw new WebApplicationException(builder.build());
 		}
 	}
 
