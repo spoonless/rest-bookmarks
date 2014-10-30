@@ -3,6 +3,9 @@ package fr.epsi.i4.bookmark;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="bookmark")
 public class Bookmark {
 
 	private String name;

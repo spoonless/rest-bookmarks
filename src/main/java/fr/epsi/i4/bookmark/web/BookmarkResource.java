@@ -1,10 +1,10 @@
 package fr.epsi.i4.bookmark.web;
 
-import static javax.ws.rs.core.Response.noContent;
-import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.*;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
@@ -43,8 +43,14 @@ public class BookmarkResource {
 		
 		checkPreconditions(request, bookmarkRepository.get(id));
 		
-		bookmarkRepository.add(id, bookmark);
-		return noContent().build();
+		boolean isCreated = bookmarkRepository.add(id, bookmark);
+		return status(isCreated ? Status.CREATED : Status.NO_CONTENT).build();
+	}
+
+	@PUT
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response add(@Context Request request, @FormParam("name") String name, @FormParam("description") String description, @FormParam("url") String url) throws InvalidBookmarkException {
+		return merge(request, new Bookmark(name, description, url));
 	}
 
 	@GET

@@ -22,10 +22,10 @@ public class BookmarkRepository {
 		populate();
 	}
 
-	public synchronized void add(String id, Bookmark bookmark) throws InvalidBookmarkException {
+	public synchronized boolean add(String id, Bookmark bookmark) throws InvalidBookmarkException {
 		bookmark.validate();
 		bookmark.setLastModification(new Date());
-		map.put(id, bookmark);
+		return map.put(id, bookmark) == null;
 	}
 
 	public synchronized String getLatestId() {
