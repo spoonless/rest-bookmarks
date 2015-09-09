@@ -15,8 +15,8 @@
 	<properties>
         <jersey.version>2.21</jersey.version>
         <jetty.version>9.3.3.v20150827</jetty.version>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
