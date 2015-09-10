@@ -1,6 +1,8 @@
 package fr.epsi.i4.bookmark.web;
 
-import static javax.ws.rs.core.Response.*;
+import static javax.ws.rs.core.Response.noContent;
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.status;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -19,6 +21,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
+
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 
 import fr.epsi.i4.bookmark.Bookmark;
 import fr.epsi.i4.bookmark.BookmarkRepository;
@@ -55,15 +59,25 @@ public class BookmarkResource {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Response getWithoutLink(@Context Request request, @Context UriInfo uriInfo) {
+		return get(request, uriInfo, false);
+	}
+
+	@GET
+	@Produces({ RepresentationFactory.HAL_JSON, RepresentationFactory.HAL_XML })
 	public Response get(@Context Request request, @Context UriInfo uriInfo) {
+		return get(request, uriInfo, true);
+	}
+
+	private Response get(Request request, UriInfo uriInfo, boolean toHal) {
 		Bookmark bookmark = getBookmark();
 		checkPreconditions(request, bookmark);
 
 		BookmarkRepresentation bookmarkRepresentation = new BookmarkRepresentation(bookmark, uriInfo.getRequestUriBuilder());
-		return ok(bookmarkRepresentation)
+		return ok(toHal ? bookmarkRepresentation.toHal() : bookmarkRepresentation)
 				.lastModified(bookmark.getLastModification())
 				.tag(String.valueOf(bookmark.hashCode()))
-				.link(bookmarkRepresentation.getQrCodeLink().getHref(), "http://bookmarks.epsi.fr/qrcode")
+				.links(bookmarkRepresentation.getQrCodeLink(), bookmarkRepresentation.getUrlLink())
 				.build();
 	}
 

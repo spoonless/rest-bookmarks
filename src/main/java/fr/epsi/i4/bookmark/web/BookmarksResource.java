@@ -1,6 +1,7 @@
 package fr.epsi.i4.bookmark.web;
 
 import java.net.URI;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -15,12 +16,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.Link;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 
 import fr.epsi.i4.bookmark.Bookmark;
 import fr.epsi.i4.bookmark.BookmarkRepository;
@@ -69,7 +73,17 @@ public class BookmarksResource {
 
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Response getWithoutLink(@QueryParam("startIndex") @DefaultValue("0") int startIndex, @QueryParam("itemCount") @DefaultValue("10") int itemCount) {
+		return get(startIndex, itemCount, false);
+	}
+
+	@GET
+	@Produces({ RepresentationFactory.HAL_JSON, RepresentationFactory.HAL_XML })
 	public Response get(@QueryParam("startIndex") @DefaultValue("0") int startIndex, @QueryParam("itemCount") @DefaultValue("10") int itemCount) {
+		return get(startIndex, itemCount, true);
+	}
+
+	private Response get(int startIndex, int itemCount, boolean hal) {
 		if (startIndex < 0) {
 			throwBadRequest("startIndex query parameter must be zero or a positive integer!");
 		}
@@ -82,17 +96,17 @@ public class BookmarksResource {
 		bookmarksRepresentation.setItemCount(itemCount);
 
 		UriBuilder uriBuilder = getUriBuilderFromId("{id}");
-
-		for (String id : bookmarkRepository.getIds(startIndex, itemCount)) {
-			bookmarksRepresentation.addBookmarkLink(uriBuilder.build(id));
+		
+		for (Map.Entry<String, Bookmark> entry : bookmarkRepository.getBookmarkEntries(startIndex, itemCount)) {
+			bookmarksRepresentation.addBookmark(uriBuilder.build(entry.getKey()), entry.getValue());
 		}
 
 		bookmarksRepresentation.addNavigationLinks(uriInfo.getRequestUriBuilder());
 
-		ResponseBuilder responseBuilder = Response.ok(bookmarksRepresentation);
+		ResponseBuilder responseBuilder = Response.ok(hal ? bookmarksRepresentation.toHal() : bookmarksRepresentation);
 		responseBuilder.cacheControl(createCacheControl());
 		for (Link link : bookmarksRepresentation.getNavigationLinks()) {
-			responseBuilder.link(link.getHref(), link.getRel());
+			responseBuilder.links(link);
 		}
 		return responseBuilder.build();
 	}

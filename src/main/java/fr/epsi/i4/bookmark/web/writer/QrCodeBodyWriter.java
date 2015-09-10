@@ -1,4 +1,4 @@
-package fr.epsi.i4.bookmark.web;
+package fr.epsi.i4.bookmark.web.writer;
 
 import java.io.IOException;
 import java.io.OutputStream;

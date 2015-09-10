@@ -5,6 +5,9 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
+import fr.epsi.i4.bookmark.web.writer.HalBodyWriter;
+import fr.epsi.i4.bookmark.web.writer.QrCodeBodyWriter;
+
 public class BookmarkApplication extends Application {
 
 	@Override
@@ -12,6 +15,7 @@ public class BookmarkApplication extends Application {
 		Set<Class<?>> classes = new HashSet<Class<?>>();
 		classes.add(QrCodeBodyWriter.class);
 		classes.add(BookmarkExceptionMapper.class);
+		classes.add(HalBodyWriter.class);
 		return classes;
 	}
 	

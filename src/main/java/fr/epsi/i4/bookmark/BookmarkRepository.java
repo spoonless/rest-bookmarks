@@ -1,12 +1,12 @@
 package fr.epsi.i4.bookmark;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class BookmarkRepository {
 
@@ -41,13 +41,8 @@ public class BookmarkRepository {
 		map.remove(id);
 	}
 
-	public synchronized String[] getIds(int startIndex, int itemCount) {
-		String[] emptyArray = new String[0];
-		if (startIndex >= map.size()) {
-			return emptyArray;
-		}
-		String[] keys = map.keySet().toArray(emptyArray);
-		return Arrays.copyOfRange(keys, startIndex, Math.min(startIndex + itemCount, keys.length));
+	public synchronized List<Map.Entry<String, Bookmark>> getBookmarkEntries(int startIndex, int itemCount) {
+		return map.entrySet().stream().skip(startIndex).limit(itemCount).collect(Collectors.toList());
 	}
 
 	private void populate() {

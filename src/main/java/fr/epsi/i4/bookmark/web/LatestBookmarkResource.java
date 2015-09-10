@@ -1,5 +1,8 @@
 package fr.epsi.i4.bookmark.web;
 
+import static javax.ws.rs.core.Response.ok;
+import static javax.ws.rs.core.Response.temporaryRedirect;
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -11,7 +14,8 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import static javax.ws.rs.core.Response.*;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
+
 import fr.epsi.i4.bookmark.Bookmark;
 
 public class LatestBookmarkResource {
@@ -35,15 +39,26 @@ public class LatestBookmarkResource {
 	}
 
 	@GET
+	@Produces({ RepresentationFactory.HAL_JSON, RepresentationFactory.HAL_XML })
+	public Response getLatest(@Context Request request) {
+		return getLatest(request, true);
+	}
+
+	@GET
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response get(@Context Request request) {
+	public Response getLatestWithoutLinks(@Context Request request) {
+		return getLatest(request, false);
+	}
+
+	private Response getLatest(Request request, boolean toHal) {
 		BookmarkResource.checkPreconditions(request, bookmark);
-		BookmarkRepresentation bookmarkRepresentation = new BookmarkRepresentation(bookmark, uriBuilder.clone());
+		BookmarkRepresentation bookmarkRepresentation = new BookmarkRepresentation(bookmark, uriBuilder);
+		
 		return ok()
 				.header("Content-Location", uriBuilder.build())
 				.cacheControl(createCacheControl())
 				.tag(String.valueOf(bookmark.hashCode()))
-				.entity(bookmarkRepresentation)
+				.entity(toHal ? bookmarkRepresentation.toHal() : bookmarkRepresentation)
 				.lastModified(bookmark.getLastModification()).build();
 	}
 
