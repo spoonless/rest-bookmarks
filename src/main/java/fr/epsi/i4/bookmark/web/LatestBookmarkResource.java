@@ -39,18 +39,18 @@ public class LatestBookmarkResource {
 	}
 
 	@GET
-	@Produces({ RepresentationFactory.HAL_JSON, RepresentationFactory.HAL_XML })
-	public Response getLatest(@Context Request request) {
-		return getLatest(request, true);
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+	public Response getWithoutLinks(@Context Request request) {
+		return get(request, false);
 	}
 
 	@GET
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Response getLatestWithoutLinks(@Context Request request) {
-		return getLatest(request, false);
+	@Produces({ RepresentationFactory.HAL_JSON, RepresentationFactory.HAL_XML })
+	public Response get(@Context Request request) {
+		return get(request, true);
 	}
 
-	private Response getLatest(Request request, boolean toHal) {
+	private Response get(Request request, boolean toHal) {
 		BookmarkResource.checkPreconditions(request, bookmark);
 		BookmarkRepresentation bookmarkRepresentation = new BookmarkRepresentation(bookmark, uriBuilder);
 		
