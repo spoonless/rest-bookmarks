@@ -19,9 +19,9 @@ Running the server
 
 The project is based on Java 8, Jetty and Maven 3. To run the server, you can use the command
 
-  mvn jetty:run
+    mvn jetty:run
 
 After few seconds, the service should be available on
 
-  http://localhost:8080
+    http://localhost:8080
  
