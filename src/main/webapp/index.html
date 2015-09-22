@@ -2,30 +2,56 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Bookmarks</title>
+<title>Bookmarks Web API</title>
 <style type="text/css">
+
+body {
+	font-family: sans-serif;
+	margin: 2em;
+}
+
 label {
 	display: inline-block;
 	width: 9em;
 	text-align: right;
+	padding-right: 1em;
 }
 </style>
 </head>
 <body>
 	<section>
-		<h1>Consulter la liste de tous les bookmarks</h1>
-		<form action="api/bookmarks/" method="get">
-			<button type="submit">consulter</button>
-		</form>
-	</section>
-	<section>
-		<h1>Ajouter un bookmark</h1>
+		<h1>Bookmarks Web API</h1>
+		<p>A Web API that allows you to store and share bookmarks online. A bookmark is a URL associated with a name and a description.</p>
+		<p>This service is only deployed for educational purposes. 
+		More specifically, this service demonstrates the usage of REST constraints, hypermedia
+		and some HTTP advanced features like content negotiation, conditional requests and cache management.</p>
+		<p>All resources created with this API are only temporarily stored and the total amount of bookmarks is limited. 
+		Hence, once the limit is reached, a new resource will automatically destroy the oldest one.</p>
+		
+		<h2>Useful starting links</h2>
+		<p>The documentation is kept as minimal as possible on purpose. 
+		You should use your knowledge of HTTP and REST architecture to find out how to use this API.</p>
+		
+		<p>As a starting point, you may</p>
+		
+		<ul>
+			<li>get the bookmarks list at <a href="api/bookmarks/">this address</a>.</li>
+			<li>create a new bookmark by using the following form:</li>
+		</ul>
+
 		<form action="api/bookmarks/" method="post">
-			<p><label for="name">name : </label><input id="name" type="text" name="name"></p>
-			<p><label for="description">description : </label><input id="description" type="text" name="description"></p>
-			<p><label for="url">url : </label><input id="url" type="text" name="url"></p>
-			<p><button type="submit">Ajouter</button></p>
+			<fieldset>
+				<legend>New bookmark</legend>
+				<label for="name">name: </label><input id="name" type="text" name="name"><br>
+				<label for="description">description: </label><input id="description" type="text" name="description"><br>
+				<label for="url">url: </label><input id="url" type="text" name="url"><br>
+				<button type="submit">Create</button>
+			</fieldset>
 		</form>
+
+		<h2>Source code</h2>
+		<p>Source code is available on GitHub: <a href="https://github.com/spoonless/rest-bookmarks">https://github.com/spoonless/rest-bookmarks</a></p>
+		
 	</section>
 </body>
 </html>
