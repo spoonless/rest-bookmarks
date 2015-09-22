@@ -12,7 +12,7 @@ All resources created with this API are only temporarily stored and the total am
 Hence, once the limit is reached, a new resource will automatically destroy the oldest one.
 
 The documentation is kept as minimal as possible on purpose.
-You should use your knowledge of HTTP, REST architecture to find out how to use this API.
+You should use your knowledge of HTTP and REST architecture to find out how to use this API.
 
 Running the server
 ------------------
@@ -21,7 +21,7 @@ The project is based on Java 8, Jetty and Maven 3. To run the server, you can us
 
     mvn jetty:run
 
-After few seconds, the service should be available on
+After few seconds, the service should be available at
 
     http://localhost:8080
  
