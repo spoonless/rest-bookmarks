@@ -76,6 +76,7 @@ public class BookmarkResource {
 		BookmarkRepresentation bookmarkRepresentation = new BookmarkRepresentation(bookmark, uriInfo.getRequestUriBuilder());
 		return ok(toHal ? bookmarkRepresentation.toHal() : bookmarkRepresentation)
 				.lastModified(bookmark.getLastModification())
+				.header("Vary", "Accept")
 				.tag(String.valueOf(bookmark.hashCode()))
 				.links(bookmarkRepresentation.getQrCodeLink(), bookmarkRepresentation.getUrlLink())
 				.build();

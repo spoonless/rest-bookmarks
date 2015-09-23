@@ -105,6 +105,8 @@ public class BookmarksResource {
 
 		ResponseBuilder responseBuilder = Response.ok(hal ? bookmarksRepresentation.toHal() : bookmarksRepresentation);
 		responseBuilder.cacheControl(createCacheControl());
+		responseBuilder.header("Vary", "Accept");
+
 		for (Link link : bookmarksRepresentation.getNavigationLinks()) {
 			responseBuilder.links(link);
 		}

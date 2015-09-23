@@ -56,6 +56,7 @@ public class LatestBookmarkResource {
 		
 		return ok()
 				.header("Content-Location", uriBuilder.build())
+				.header("Vary", "Accept")
 				.cacheControl(createCacheControl())
 				.tag(String.valueOf(bookmark.hashCode()))
 				.entity(toHal ? bookmarkRepresentation.toHal() : bookmarkRepresentation)
