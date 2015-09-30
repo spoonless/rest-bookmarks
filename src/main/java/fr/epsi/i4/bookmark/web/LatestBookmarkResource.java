@@ -59,6 +59,7 @@ public class LatestBookmarkResource {
 				.header("Vary", "Accept")
 				.cacheControl(createCacheControl())
 				.tag(String.valueOf(bookmark.hashCode()))
+				.links(bookmarkRepresentation.getCollectionLink())
 				.entity(toHal ? bookmarkRepresentation.toHal() : bookmarkRepresentation)
 				.lastModified(bookmark.getLastModification()).build();
 	}

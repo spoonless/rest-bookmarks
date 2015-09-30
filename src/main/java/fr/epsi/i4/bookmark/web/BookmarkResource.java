@@ -78,7 +78,7 @@ public class BookmarkResource {
 				.lastModified(bookmark.getLastModification())
 				.header("Vary", "Accept")
 				.tag(String.valueOf(bookmark.hashCode()))
-				.links(bookmarkRepresentation.getQrCodeLink(), bookmarkRepresentation.getUrlLink())
+				.links(bookmarkRepresentation.getQrCodeLink(), bookmarkRepresentation.getUrlLink(), bookmarkRepresentation.getCollectionLink())
 				.build();
 	}
 

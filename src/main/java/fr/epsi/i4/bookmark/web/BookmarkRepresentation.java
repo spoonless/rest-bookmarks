@@ -21,6 +21,7 @@ public class BookmarkRepresentation implements Representable {
 
 	private Bookmark bookmark;
 	private Link qrCodeLink;
+	private Link collectionLink;
 	private URI selfUri;
 	private Link urlLink;
 
@@ -31,8 +32,9 @@ public class BookmarkRepresentation implements Representable {
 		this.bookmark = bookmark;
 		selfUri = uriBuilder.build();
 		URI qrcodeUri = uriBuilder.clone().path("qrcode").build();
-		this.qrCodeLink = Link.fromUri(qrcodeUri).rel("http://bookmarks.epsi.fr/rels/qrcode").build();
-		this.urlLink = Link.fromUri(bookmark.getUrl()).rel("related").build();
+		this.qrCodeLink = Link.fromUri(qrcodeUri).rel("http://bookmarks.epsi.fr/rels/qrcode").title("QR code").type("image/png").build();
+		this.collectionLink = Link.fromUri(uriBuilder.clone().path("..").build()).rel("collection").build();
+		this.urlLink = Link.fromUri(bookmark.getUrl()).rel("related").title("Bookmarked link").build();
 	}
 
 	@XmlElement
@@ -63,6 +65,11 @@ public class BookmarkRepresentation implements Representable {
 	@XmlTransient
 	public URI getSelfUri() {
 		return selfUri;
+	}
+	
+	@XmlTransient
+	public Link getCollectionLink() {
+		return collectionLink;
 	}
 
 	@Override
