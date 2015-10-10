@@ -66,7 +66,7 @@ public class LatestBookmarkResource {
 
 	private CacheControl createCacheControl() {
 		CacheControl cacheControl = new CacheControl();
-		cacheControl.setMaxAge(30);
+		cacheControl.setMaxAge(15);
 		return cacheControl;
 	}
 }
