@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.CacheControl;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
@@ -79,6 +80,7 @@ public class BookmarkResource {
 				.header("Vary", "Accept")
 				.tag(String.valueOf(bookmark.hashCode()))
 				.links(bookmarkRepresentation.getQrCodeLink(), bookmarkRepresentation.getUrlLink(), bookmarkRepresentation.getCollectionLink())
+				.cacheControl(createCacheControl())
 				.build();
 	}
 
@@ -99,6 +101,7 @@ public class BookmarkResource {
 				.link(uriInfo.getAbsolutePath().resolve("."), "alternate")
 				.lastModified(bookmark.getLastModification())
 				.tag(String.valueOf(bookmark.hashCode()))
+				.cacheControl(createCacheControl())
 				.build();
 	}
 
@@ -130,4 +133,9 @@ public class BookmarkResource {
 		}
 	}
 
+	private CacheControl createCacheControl() {
+		CacheControl cacheControl = new CacheControl();
+		cacheControl.setMaxAge(60);
+		return cacheControl;
+	}
 }
