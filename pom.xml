@@ -4,18 +4,17 @@
 	<groupId>fr.epsi.i4</groupId>
 	<artifactId>bookmark-app</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<developers>
 		<developer>
 			<name>David Gayerie</name>
-			<email>david.gayerie.epsi@mailoo.org</email>
+			<email>dagaydevel@free.fr</email>
 		</developer>
 	</developers>
 
 	<properties>
-		<jersey.version>2.21</jersey.version>
-		<jetty.version>9.3.3.v20150827</jetty.version>
-		<servlet.api.version>3.1.0</servlet.api.version>
+		<jersey.version>2.28</jersey.version>
+		<servlet.api.version>4.0.1</servlet.api.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,6 +38,10 @@
 			<artifactId>jersey-container-servlet</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-moxy</artifactId>
 		</dependency>
@@ -57,29 +60,9 @@
 			<artifactId>qrgen</artifactId>
 			<version>1.4</version>
 		</dependency>
-
 		<dependency>
-			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
-			<artifactId>jersey-test-framework-provider-bundle</artifactId>
-			<type>pom</type>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlet</artifactId>
-			<version>${jetty.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-webapp</artifactId>
-			<version>${jetty.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<artifactId>javax.servlet-api</artifactId>
 			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
 			<version>${servlet.api.version}</version>
 			<scope>provided</scope>
 		</dependency>
@@ -92,13 +75,17 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>copy-dependencies</id>
 						<phase>package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
+						<goals><goal>copy</goal></goals>
 						<configuration>
-							<includeScope>compile</includeScope>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.github.jsimone</groupId>
+									<artifactId>webapp-runner</artifactId>
+									<version>9.0.19.0</version>
+									<destFileName>webapp-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
 						</configuration>
 					</execution>
 				</executions>
@@ -106,14 +93,9 @@
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.version}</version>
+				<version>9.4.18.v20190429</version>
 				<configuration>
 					<contextPath>/</contextPath>
-					<webApp>
-						<contextPath>/</contextPath>
-						<webInfIncludeJarPattern>.*/.*jersey-[^/]\.jar$</webInfIncludeJarPattern>
-					</webApp>
-					<war>${project.build.directory}/${project.build.finalName}.war</war>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -1,1 +1,1 @@
-web: java -cp target/classes:target/dependency/* fr.epsi.i4.bookmark.web.jetty.JettyMain
+web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port $PORT target/*.war
